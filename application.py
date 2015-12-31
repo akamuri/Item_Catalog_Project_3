@@ -287,19 +287,24 @@ def showGames():
 # Create a new restaurant
 
 
-@app.route('/restaurant/new/', methods=['GET', 'POST'])
-def newRestaurant():
-    if 'username' not in login_session:
-        return redirect('/login')
+@app.route('/games/new/', methods=['GET', 'POST'])
+def newGame():
+    #if 'username' not in login_session:
+    #    return redirect('/login')
     if request.method == 'POST':
-        newRestaurant = Restaurant(
-            name=request.form['name'], user_id=login_session['user_id'])
-        session.add(newRestaurant)
-        flash('New Restaurant %s Successfully Created' % newRestaurant.name)
+        newGame = Game(
+            name=request.form['name'], 
+            user_id=1, ## NOTTTTEEEE THHIISSSs 
+            description=request.form['description'],
+            ageRating= 'M', ## NOTTTTEEEE THHIISSSs 
+            price=request.form['price']
+            )
+        session.add(newGame)
+        flash('New Game %s Successfully Created' % newGame.name)
         session.commit()
-        return redirect(url_for('showRestaurants'))
+        return redirect(url_for('showGames'))
     else:
-        return render_template('newRestaurant.html')
+        return render_template('newGame.html')
 
 # Edit a restaurant
 

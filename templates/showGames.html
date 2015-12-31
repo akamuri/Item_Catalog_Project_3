@@ -1,0 +1,68 @@
+{% extends "main.html" %}
+{% block content %}
+{% include "header.html" %}
+
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Games Catalog</title>
+	<!--[if IE]><script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+	<link rel="stylesheet" type="text/css" href="../css/24393.css" />
+</head>
+<body>
+	<div id="wrapper">
+		<div id="header">
+			<a href="{{url_for('newGame')}}">
+				<button class="testbutton" id="new-game">Add Game
+				</button>
+			</a>
+			
+		</div>
+		&nbsp;
+
+		<div class = 'flash'>
+			{% with messages = get_flashed_messages() %}
+			{% if messages %}
+
+			<ul>
+				{% for message in messages %}
+				<li> <strong> {{ message }} </strong> </li>
+				{% endfor %}
+			</ul>
+			{% endif %}
+			{% endwith %}
+
+		</div>
+
+		<div id="leftcolumn">
+			<div id="menu12">
+				<ul>
+					<li><div class="bt1"><span class="ht11">»&nbsp;</span>
+						<span class="hw12">Categories Menu</span></div></li>
+						<li><a title="Console" href="#">Console</a></li>
+						<li><a title="Genre" href="#">Genre</a></li>
+						<li><a title="Price" href="#">Price</a></li>
+						<li><a title="Age Rating" href="#">Age Rating</a></li>		
+					</ul>
+				</div>
+			</div>
+			<div id="content">
+				{% for game in games %}
+				<a href = "{{url_for('showGames', restaurant_id = game.id)}}">
+					<div class="row">
+						<div class="col-md-1"></div>
+						<div class="col-md-10 game-list">
+							<h3>{{game.name}}</h3>
+						</div>
+						<div class="col-md-1"></div>
+					</div>
+				</a>
+				{% endfor %}
+				{% endblock %}
+			</div>
+			<div id="footer">
+				<p>This is the Footer</p>
+			</div>
+		</div>
+	</body>
+	</html>
