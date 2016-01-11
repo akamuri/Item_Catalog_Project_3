@@ -253,7 +253,7 @@ def gdisconnect():
 
 
 # JSON APIs to view Restaurant Information
-@app.route('/restaurant/<int:restaurant_id>/menu/JSON')
+@app.route('/co/<int:restaurant_id>/menu/JSON')
 def restaurantMenuJSON(restaurant_id):
     game = session.query(Game).filter_by(id=game_id).one()
     items = session.query(MenuItem).filter_by(
@@ -267,10 +267,13 @@ def menuItemJSON(restaurant_id, menu_id):
     return jsonify(Menu_Item=Menu_Item.serialize)
 
 
-@app.route('/restaurant/JSON')
+@app.route('/consoles/JSON')
 def restaurantsJSON():
-    restaurants = session.query(Restaurant).all()
-    return jsonify(restaurants=[r.serialize for r in restaurants])
+    consoles = session.query(Console).all()
+    for c in consoles:
+     print c.name
+
+    return jsonify(consoles=[r.serialize for r in consoles])
 
 
 # Show all restaurants
@@ -291,20 +294,25 @@ def showGames():
 def newGame():
     #if 'username' not in login_session:
     #    return redirect('/login')
+    consoles = session.query(Console).all()
+
     if request.method == 'POST':
         newGame = Game(
             name=request.form['name'], 
             user_id=1, ## NOTTTTEEEE THHIISSSs 
             description=request.form['description'],
-            ageRating= 'M', ## NOTTTTEEEE THHIISSSs 
+            ageRating= request.form['ageRating'],
             price=request.form['price']
             )
+        
         session.add(newGame)
         flash('New Game %s Successfully Created' % newGame.name)
         session.commit()
+        obj = session.query(Game).order_by(Game.id.desc()).first()
+        print "game id is" ,obj.id
         return redirect(url_for('showGames'))
     else:
-        return render_template('newGame.html')
+        return render_template('newGame.html', consoleList = consoles)
 
 
 
