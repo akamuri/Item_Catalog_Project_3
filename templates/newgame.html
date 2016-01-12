@@ -25,59 +25,72 @@
 					<input type ="text" class="form-control" maxlength="10" name="price" placeholder="Price in $">
 				</div>
 
-				<label for="price">Console:</label>
+				<label for="console">Console:</label>
 				<div class="input-group">
 					
-						<select name="console[]" width="300px" multiple>
-							{% for o in consoleList %}
-							<option value="{{ o.name }}" SELECTED>{{ o.name }}</option>
-							{% endfor %}
-						</select>
-					</td>
-					<td>
-						<input class="button1" type="submit" value="Select">
-					</td>
+					<select multiple id="console" name="console" width="300px" >
+						{% for c in consoleList %}
+						<option value="{{ c.name }}" SELECTED>{{ c.name }}</option>
+						{% endfor %}
+					</select>
+				</td>
+				<td>
+					<input class="button1" type="submit" value="Select">
+				</td>
 
 
 				<p>Hold down the Ctrl (windows) / Command (Mac) button to select multiple Consoles.</p>
 			</div>
 
-			<label for="ageRating">Age Rating:</label>
-			<div class="radio">
-				<label>
-					<input type="radio" name="ageRating" id="ageRating1" value="EARLY CHILDHOOD">
-					EARLY CHILDHOOD
-				</label>
-			</div>
-			<div class="radio">
-				<label>
-					<input type="radio" name="ageRating" id="ageRating2" value="EVERYONE"> EVERYONE
-				</label>
-			</div>
-			<div class="radio">
-				<label>
-					<input type="radio" name="ageRating" id="ageRating2" value="EVERYONE 10+"> EVERYONE 10+
-				</label>
-			</div>
-			<div class="radio">
-				<label>
-					<input type="radio" name="ageRating" id="ageRating3" value="TEEN">TEEN
-				</label>
-			</div>
-			<div class="radio">
-				<label>
-					<input type="radio" name="ageRating" id="ageRating4" value="MATURE"> MATURE
-				</label>
-			</div>
+			<label for="genre">Genre:</label>
+			<div class="input-group">
+				<select name="genre" width="300px">
+					{% for g in genreList %}
+					<option value="{{ g.name }}" SELECTED>{{ g.name }}</option>
+					{% endfor %}
+				</select>
+			</td>
+			<td>
+				<input class="button1" type="submit" value="Select">
+			</td>
+		</div>
+
+		<label for="ageRating">Age Rating:</label>
+		<div class="radio">
+			<label>
+				<input type="radio" name="ageRating" id="ageRating1" value="EARLY CHILDHOOD">
+				EARLY CHILDHOOD
+			</label>
+		</div>
+		<div class="radio">
+			<label>
+				<input type="radio" name="ageRating" id="ageRating2" value="EVERYONE"> EVERYONE
+			</label>
+		</div>
+		<div class="radio">
+			<label>
+				<input type="radio" name="ageRating" id="ageRating2" value="EVERYONE 10+"> EVERYONE 10+
+			</label>
+		</div>
+		<div class="radio">
+			<label>
+				<input type="radio" name="ageRating" id="ageRating3" value="TEEN">TEEN
+			</label>
+		</div>
+		<div class="radio">
+			<label>
+				<input type="radio" name="ageRating" id="ageRating4" value="MATURE"> MATURE
+			</label>
+		</div>
 
 
-			<button type="submit" class="btn btn-default" id="submit" type="submit">
-				<span class="glyphicon glyphicon-glass" aria-hidden="true"></span>Create</button>
-			</div>
-		</form>
+		<button type="submit" class="btn btn-default" id="submit" type="submit">
+			<span class="glyphicon glyphicon-glass" aria-hidden="true"></span>Create</button>
+		</div>
+	</form>
 
 
-	</div>
+</div>
 </div>
 {% endblock %}
 

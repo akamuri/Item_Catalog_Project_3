@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, redirect, jsonify, url_for, flash
 from sqlalchemy import create_engine, asc
 from sqlalchemy.orm import sessionmaker
-from database_setup import Base, Game, Genre, Console, User
+from database_setup import Base, Game, Genre, Console, User, Inventory
 from flask import session as login_session
 import random
 import string
@@ -295,6 +295,7 @@ def newGame():
     #if 'username' not in login_session:
     #    return redirect('/login')
     consoles = session.query(Console).all()
+    genres = session.query(Genre).all()
 
     if request.method == 'POST':
         newGame = Game(
@@ -308,11 +309,23 @@ def newGame():
         session.add(newGame)
         flash('New Game %s Successfully Created' % newGame.name)
         session.commit()
-        obj = session.query(Game).order_by(Game.id.desc()).first()
-        print "game id is" ,obj.id
+        gameObj = session.query(Game).order_by(Game.id.desc()).first()
+
+
+        multiselect = request.form.getlist('console')
+
+        for x in multiselect:
+            newInventory= Inventory(
+                    game_id = gameObj.id,
+                    console=x,
+                    genre = request.form['genre']
+                            )
+            session.add(newInventory)
+            session.commit()
+
         return redirect(url_for('showGames'))
     else:
-        return render_template('newGame.html', consoleList = consoles)
+        return render_template('newGame.html', consoleList = consoles , genreList=genres)
 
 
 
@@ -320,12 +333,12 @@ def newGame():
 @app.route('/games/<int:game_id>/details/')
 def showGameDetails(game_id):
     game = session.query(Game).filter_by(id=game_id).one()
-    console = session.query(Console).filter_by(game_id=game_id).all()
-
+    inventory = session.query(Inventory).filter_by(game_id=game_id).all()
+    print "inventory is",inventory
     if 'username' not in login_session or creator.id != login_session['user_id']:
-        return render_template('showGameDetails.html', game_id=game.id, game=game, console=console)
+        return render_template('showGameDetails.html', game_id=game.id, game=game, inventory=inventory)
     else:
-        return render_template('showGameDetails.html', game_id=game.id, game=game, console=console)
+        return render_template('showGameDetails.html', game_id=game.id, game=game, inventory=inventory)
 
 # Edit a Game
 @app.route('/games/<int:game_id>/edit/', methods=['GET', 'POST'])
@@ -348,6 +361,8 @@ def editGame(game_id):
 @app.route('/games/<int:game_id>/delete/', methods=['GET', 'POST'])
 def deleteGame(game_id):
     gameToDelete = session.query(Game).filter_by(id=game_id).one()
+    inventoryToDelete = session.query(Inventory).filter_by(game_id=game_id).all()
+    
 #   if 'username' not in login_session:
 #        return redirect('/login')
 #    if restaurantToDelete.user_id != login_session['user_id']:
@@ -355,6 +370,10 @@ def deleteGame(game_id):
     if request.method == 'POST':
         session.delete(gameToDelete)
         flash('%s Successfully Deleted' % gameToDelete.name)
+        session.commit()
+
+        for o in inventoryToDelete:
+            session.delete(o)
         session.commit()
         return redirect(url_for('showGames', game_id=game_id))
     else:

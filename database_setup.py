@@ -49,9 +49,8 @@ class Genre(Base):
     __tablename__ = 'genre'
    
     id = Column(Integer, primary_key=True)
-    Genre = Column(String(250), nullable=False)
-    game_id = Column(Integer,ForeignKey('game.id'))
-    game = relationship(Game)
+    name = Column(String(250), nullable=False)
+
 
     @property
     def serialize(self):
@@ -59,7 +58,6 @@ class Genre(Base):
        return {
            'name'         : self.name,
            'id'           : self.id,
-           'user_id'      : self.game_id,
        }
  
 class Console(Base):
@@ -67,8 +65,6 @@ class Console(Base):
 
     id = Column(Integer, primary_key = True)
     name = Column(String(250), nullable=False)
-    game_id = Column(Integer,ForeignKey('game.id'))
-    game = relationship(Game)
 
 
     @property
@@ -77,7 +73,23 @@ class Console(Base):
        return {
            'name'       : self.name,
            'id'         : self.id,
-           'game_id'    : self.game_id,
+       }
+
+class Inventory(Base):
+    __tablename__ = 'inventory'
+
+    id = Column(Integer, primary_key = True)
+    game_id = Column(Integer,ForeignKey('game.id'))
+    game = relationship(Game)
+    console = Column(String(250), nullable=False)
+    genre = Column(String(250), nullable=False)
+
+
+
+    @property
+    def serialize(self):
+       """Return object data in easily serializeable format"""
+       return {
        }
 
 
