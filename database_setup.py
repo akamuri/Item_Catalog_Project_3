@@ -11,6 +11,7 @@ class User(Base):
     id = Column(Integer, primary_key=True)
     name = Column(String(250), nullable=False)
     email = Column(String(250), nullable=False)
+    picture = Column(String(250))
 
     @property
     def serialize(self):
@@ -29,6 +30,7 @@ class Game(Base):
     description = Column(String(250), nullable=False)
     ageRating = Column(String(800), nullable=False)
     price = Column(String(8))
+    image = Column(String(250))
     user_id = Column(Integer,ForeignKey('user.id'))
     user = relationship(User)
 
@@ -83,6 +85,8 @@ class Inventory(Base):
     game = relationship(Game)
     console = Column(String(250), nullable=False)
     genre = Column(String(250), nullable=False)
+    user_id = Column(Integer,ForeignKey('user.id'))
+    user = relationship(User)
 
 
 

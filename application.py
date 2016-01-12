@@ -171,7 +171,7 @@ def gconnect():
         return response
 
     # Store the access token in the session for later use.
-    login_session['credentials'] = credentials
+    login_session['credentials'] = credentials.access_token
     login_session['gplus_id'] = gplus_id
 
     # Get user info
@@ -240,7 +240,7 @@ def gdisconnect():
             json.dumps('Current user not connected.'), 401)
         response.headers['Content-Type'] = 'application/json'
         return response
-    access_token = credentials.access_token
+    access_token = credentials
     url = 'https://accounts.google.com/o/oauth2/revoke?token=%s' % access_token
     h = httplib2.Http()
     result = h.request(url, 'GET')[0]
@@ -292,18 +292,19 @@ def showGames():
 
 @app.route('/games/new/', methods=['GET', 'POST'])
 def newGame():
-    #if 'username' not in login_session:
-    #    return redirect('/login')
+    if 'username' not in login_session:
+        return redirect('/login')
     consoles = session.query(Console).all()
     genres = session.query(Genre).all()
 
     if request.method == 'POST':
         newGame = Game(
             name=request.form['name'], 
-            user_id=1, ## NOTTTTEEEE THHIISSSs 
+            user_id=login_session['user_id'],
             description=request.form['description'],
             ageRating= request.form['ageRating'],
-            price=request.form['price']
+            price=request.form['price'],
+            image = request.form['image']
             )
         
         session.add(newGame)
@@ -318,7 +319,9 @@ def newGame():
             newInventory= Inventory(
                     game_id = gameObj.id,
                     console=x,
-                    genre = request.form['genre']
+                    genre = request.form['genre'],
+                    user_id=login_session['user_id']
+
                             )
             session.add(newInventory)
             session.commit()
@@ -334,11 +337,13 @@ def newGame():
 def showGameDetails(game_id):
     game = session.query(Game).filter_by(id=game_id).one()
     inventory = session.query(Inventory).filter_by(game_id=game_id).all()
+    creator = getUserInfo(game.user_id)
+
     print "inventory is",inventory
     if 'username' not in login_session or creator.id != login_session['user_id']:
-        return render_template('showGameDetails.html', game_id=game.id, game=game, inventory=inventory)
+        return render_template('showGameDetails.html', game_id=game.id, game=game, inventory=inventory, creator=creator) 
     else:
-        return render_template('showGameDetails.html', game_id=game.id, game=game, inventory=inventory)
+        return render_template('showGameDetails.html', game_id=game.id, game=game, inventory=inventory, creator=creator)
 
 # Edit a Game
 @app.route('/games/<int:game_id>/edit/', methods=['GET', 'POST'])
@@ -466,7 +471,7 @@ def disconnect():
         del login_session['user_id']
         del login_session['provider']
         flash("You have successfully been logged out.")
-        return redirect(url_for('showRestaurants'))
+        return redirect(url_for('showGames'))
     else:
         flash("You were not logged in")
         return redirect(url_for('showRestaurants'))
