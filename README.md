@@ -26,8 +26,11 @@ GENERAL USAGE NOTES
 #Add a Game
 - To Add a Game click 
 #View a Game
+- gdgf
 #Edit a Game
+- fgdgd
 #Delete a Game
+-gdfgdf
 
 
 ===========================================================================
