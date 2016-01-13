@@ -24,13 +24,18 @@ SETUP NOTES
 
 GENERAL USAGE NOTES
 -------------------
-#Add a Game
+
+Add a Game
+-----------
 - To Add a Game click 
-#View a Game
+View a Game
+-----------
 - gdgf
-#Edit a Game
+Edit a Game
+-----------
 - fgdgd
-#Delete a Game
+Delete a Game
+-----------
 -gdfgdf
 
 
