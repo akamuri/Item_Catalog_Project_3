@@ -29,33 +29,6 @@
 				<label for="image">Cover Image:</label>
 				<input type ="text" maxlength="500" class="form-control" name="image"placeholder="hyperlink to game image">
 
-				<label for="console">Console:</label>
-				<div class="input-group">
-
-					<select multiple id="console" name="console" width="300px" >
-						{% for c in consoleList %}
-						<option value="{{ c.name }}" SELECTED>{{ c.name }}</option>
-						{% endfor %}
-					</select>
-				</td>
-
-
-				<p>Hold down the Ctrl (windows) / Command (Mac) button to select multiple Consoles.</p>
-			</div>
-
-			<label for="genre">Genre:</label>
-			<div class="input-group">
-				<select name="genre" width="300px">
-					
-					{% for g in genreList %}
-					<option value="{{ g.name }}" SELECTED>{{ g.name }}</option>
-					{% endfor %}
-				</select>
-			</td>
-			<td>
-				<input class="button1" type="submit" value="Select">
-			</td>
-		</div>
 
 		<label for="ageRating">Age Rating:</label>
 		<div class="radio">
@@ -66,7 +39,7 @@
 		</div>
 		<div class="radio">
 			<label>
-				<input type="radio" name="ageRating" id="ageRating2" value="EVERYONE"> EVERYONE
+				<input checked="checked"  type="radio" name="ageRating" id="ageRating2" value="EVERYONE"> EVERYONE
 			</label>
 		</div>
 		<div class="radio">
@@ -92,13 +65,13 @@
 
 		</div>
 
+	</form>
 		<a href = "{{url_for('showGameDetails', game_id=game.id )}}">
 			<button class="btn btn-default delete">
 				<span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Cancel</button>
 			</a>
 		</div>
 
-	</form>
 
 
 

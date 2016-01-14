@@ -280,8 +280,6 @@ def showGameDetails(game_id):
     game = session.query(Game).filter_by(id=game_id).one()
     inventory = session.query(Inventory).filter_by(game_id=game_id).all()
     creator = getUserInfo(game.user_id)
-
-    print "inventory is",inventory
     if 'username' not in login_session or creator.id != login_session['user_id']:
         return render_template('PublicshowGameDetails.html', game_id=game.id, game=game, inventory=inventory, creator=creator) 
     else:
@@ -296,12 +294,8 @@ def showConsoles():
     if request.method == 'POST':
         con = request.form['console']
         inventory = session.query(Inventory).filter_by(console=con).all()
-        print "here 1"
-        for x in inventory:
-            print x.console
         return render_template('consoles.html', consoleList = consoles , genreList=genres, gameConsoles=inventory)
     else:
-        print "here 2"
         return render_template('consoles.html', consoleList = consoles , genreList=genres)
 
 # Show Genres page
@@ -421,6 +415,8 @@ def editGame(game_id):
             user_id=login_session['user_id']
         if request.form['description']:
             editedGame.description=request.form['description']
+        if request.form['price']:
+            editedGame.price=request.form['price']
         if request.form['ageRating']:
             editedGame.ageRating= request.form['ageRating']
 
@@ -484,4 +480,4 @@ def disconnect():
 if __name__ == '__main__':
     app.secret_key = 'super_secret_key'
     app.debug = True
-    app.run(host='0.0.0.0', port=5000)
+    app.run(host='0.0.0.0', port=8000)

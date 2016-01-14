@@ -10,6 +10,7 @@ README
   - Consoles the Game is avaiable on.
   - Genre 
   - Age Rating
+  - Game Cover Image
 
 ----------------------------------------------------------------------------
 
@@ -20,7 +21,7 @@ SETUP NOTES
 3. Launch the Vagrant VM (by typing vagrant up in the directory fullstack/vagrant from the terminal). You can find further instructions on how to do so here.
 4. Write the Flask application locally in the /vagrant/catalog directory (which will automatically be synced to /vagrant/catalog within the VM). Name it application.py.
 5. Run your application within the VM by typing python /vagrant/catalog/application.py into the Terminal. If you named the file from step 4 as something other than application.py, in the above command substitute in the file name on your computer.
-6. Access and test your application by visiting http://localhost:8000 locally on your browser.
+6. Access and test your application by visiting http://localhost:8000/games/ locally on your browser.
 
 GENERAL USAGE NOTES
 -------------------
@@ -64,6 +65,14 @@ View a Games by Console
 - Select the Console you are looking for in the Drop Down Menu
 - Click Select to see all the Games avaibale on the Console
 
+View a Games by Price
+-----------------------
+- Avaible Web Game Catalog version 1.01
+
+View a Games by Age Rating
+-----------------------
+- Avaible Web Game Catalog version 1.01
+
 View a Games by Genre
 -----------------------
 - Click Genres in the Side bar
@@ -79,6 +88,9 @@ Edit a Game
 - If the game belongs to you meaning, you created it.
 - Then the Edit Game Button will appear click it to Edit the Game
 
+- NOTE Editing Game Consoles and Genre is currently not present because it involves updating inventory.
+- This should be avaible Web Game Catalog version 1.01
+
 
 
 Delete a Game
@@ -89,6 +101,9 @@ Delete a Game
 - If the game belongs to you meaning, you created it.
 - Then the Delete Game Button will appear click it to Delete the Game
 
+Export JSON
+-----------
+- For Game Table = http://localhost:8000/games/JSON
 
 
 
