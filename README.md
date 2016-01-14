@@ -27,16 +27,72 @@ GENERAL USAGE NOTES
 
 Add a Game
 -----------
-- To Add a Game click 
-View a Game
+- On the Home Page, click Add Game
+- If you are not logged in you will be prompeted to log In.
+- You can use your Facebook or Google accounts to Log in. 
+- Add the Need Game info.
+	- For the Image link copy any web image url for the game and paste it in the textbox.
+- Click Create to Add the Game
+- Game will now show on the home page.
+
+Add a Console
+-------------
+- Click Add Console
+- You will be prompted to Log In if you aren't already.
+- Once on the Add Console Page
+- Type a Name of a Console
+- Click Create 
+
+
+Add a Genre
 -----------
-- gdgf
+- Click Add Genre
+- You will be prompted to Log In if you aren't already.
+- Once on the Add Genre Page
+- Type a Name of a Genre
+- Click Create
+
+View a Game Details
+-------------------
+- Click on the Game title in the Home page 
+- This will take you to the Game Details page
+
+
+View a Games by Console
+-----------------------
+- Click Consoles in the Side bar
+- Select the Console you are looking for in the Drop Down Menu
+- Click Select to see all the Games avaibale on the Console
+
+View a Games by Genre
+-----------------------
+- Click Genres in the Side bar
+- Select the Genre you are looking for in the Drop Down Menu
+- Click Select to see all the Games avaibale in the Genre
+
+
 Edit a Game
 -----------
-- fgdgd
+- First Log in 
+- Click on the Game title in the Home page 
+- This will take you to the Game Details page
+- If the game belongs to you meaning, you created it.
+- Then the Edit Game Button will appear click it to Edit the Game
+
+
+
 Delete a Game
------------
--gdfgdf
+-------------
+- First Log in 
+- Click on the Game title in the Home page 
+- This will take you to the Game Details page
+- If the game belongs to you meaning, you created it.
+- Then the Delete Game Button will appear click it to Delete the Game
+
+
+
+
+
 
 
 ===========================================================================
