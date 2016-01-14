@@ -59,6 +59,9 @@ h3 {
 	border-color: #9FB80A;
 	border-width: 2px;
 	color: #9FB80A;;
+	margin-top: 5px; 
+	margin-left: 1px;
+	margin-right: 10px;
 }
 .btn:hover {
 	border-color: #9FB80A;

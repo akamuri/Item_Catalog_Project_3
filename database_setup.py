@@ -28,7 +28,7 @@ class Game(Base):
     id = Column(Integer, primary_key=True)
     name = Column(String(250), nullable=False)
     description = Column(String(250), nullable=False)
-    ageRating = Column(String(800), nullable=False)
+    ageRating = Column(String(800))
     price = Column(String(8))
     image = Column(String(250))
     user_id = Column(Integer,ForeignKey('user.id'))
@@ -81,6 +81,7 @@ class Inventory(Base):
     __tablename__ = 'inventory'
 
     id = Column(Integer, primary_key = True)
+    name = Column(String(250), nullable=False)
     game_id = Column(Integer,ForeignKey('game.id'))
     game = relationship(Game)
     console = Column(String(250), nullable=False)

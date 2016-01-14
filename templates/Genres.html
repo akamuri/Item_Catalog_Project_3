@@ -31,7 +31,6 @@
 					</button>
 				</a>
 			</div>
-
 		</div>
 		&nbsp;
 
@@ -48,12 +47,12 @@
 			{% endwith %}
 
 		</div>
-		
+
 		<div id="leftcolumn">
 			<div id="menu12">
 				<ul>
 					<li><div class="bt1"><span class="ht11">»&nbsp;</span>
-						<span class="hw12">Categories</span></div></li>
+						<span class="hw12">Categories Menu</span></div></li>
 						<li><a title="Console" href="{{url_for('showConsoles')}}">Console</a></li>
 						<li><a title="Genre"  href="{{url_for('showGenres')}}">Genre</a></li>
 						<li><a title="Price" href="#">Price</a></li>
@@ -61,10 +60,31 @@
 					</ul>
 				</div>
 			</div>
-			<h2>&nbsp;&nbsp;&nbsp;List of All Games</h2>
+
 			<div id="content">
-				{% for game in games %}
-				<a href = "{{url_for('showGameDetails', game_id = game.id)}}">
+				<h2>&nbsp;&nbsp;Genres</h2>
+				<form action="#" method = "post">
+
+					<div class="input-group" style = "padding-left: 20px;">
+
+						<select  id="genre" name="genre" width="300px" >
+							<option selected>Genre </option>
+							{% for g in genreList %}
+							<option value="{{ g.name }}">{{ g.name }}</option>
+							{% endfor %}
+						</select>
+					</td>
+					<td>
+						<a href="{{url_for('showGenres')}}">
+							<input class="button1" type="submit" value="Select">
+						</a>
+					</td>
+
+				</form>
+
+				<h2>&nbsp;&nbsp;List of Games</h2>
+				{% for game in gameGenres %}
+				<a href = "{{url_for('showGameDetails', game_id = game.game_id)}}">
 					<div class="row">
 						<div class="col-md-1"></div>
 						<div class="col-md-10 game-list">
@@ -75,10 +95,17 @@
 				</a>
 				{% endfor %}
 				{% endblock %}
+
+
+
 			</div>
-			<div id="footer">
-				<p>This is the Footer</p>
-			</div>
+
+
+
 		</div>
-	</body>
-	</html>
+		<div id="footer">
+			<p>This is the Footer</p>
+		</div>
+	</div>
+</body>
+</html>
