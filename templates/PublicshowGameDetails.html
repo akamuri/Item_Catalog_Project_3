@@ -10,6 +10,7 @@
 		</h1>
 
 	</div>
+
 </div>
 
 <div class = 'flash'>
@@ -25,27 +26,40 @@
 	{% endwith %}
 
 </div>
-
-
-<div class="row">
-	<div class="col-md-1"></div>
-	<div class="col-md-3">
-		<div class="menu-item">
-			<img src = {{game.image}}>
-			&nbsp;
-
-			<h3>Synopsis</h3>
-			<p>{{game.description}}</p>
-			Age Rating <p>{{game.ageRating}}</p>
-			Price <p>{{game.price}}</p>
-			Console
-			{% for i in inventory %}
-			<p>{{i.console}}</p>
-			{% endfor %}
+<p></p>
+<div id="leftcolumn">
+	<div id="menu12">
+		<ul>
+			<li><div class="bt1"><span class="ht11">»&nbsp;</span>
+				<span class="hw12">Categories</span></div></li>
+				<li><a title="Games" href="{{url_for('showGames')}}">Games</a></li>
+				<li><a title="Console" href="{{url_for('showConsoles')}}">Console</a></li>
+				<li><a title="Genre"  href="{{url_for('showGenres')}}">Genre</a></li>
+				<li><a title="Age Rating" href="{{url_for('showageRating')}}">Age Rating</a></li>		
+			</ul>
 		</div>
 	</div>
-	
-	<div class="col-md-1"></div>
-</div>
 
-{% endblock %}
+
+	<div class="row">
+		<div class="col-md-1"></div>
+		<div class="col-md-3">
+			<div class="menu-item">
+				<img style= "padding-top:10px; padding-left:10px;" src = {{game.image}}>
+				&nbsp;
+
+				<h3>Synopsis</h3>
+				<p>{{game.description}}</p>
+				Age Rating <p>{{game.ageRating}}</p>
+				Price <p>{{game.price}}</p>
+				Console
+				{% for i in inventory %}
+				<p>{{i.console}}</p>
+				{% endfor %}
+			</div>
+		</div>
+
+		<div class="col-md-1"></div>
+	</div>
+
+	{% endblock %}

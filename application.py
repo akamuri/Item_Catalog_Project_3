@@ -60,7 +60,6 @@ def fbconnect():
     # strip expire tag from access token
     token = result.split("&")[0]
 
-
     url = 'https://graph.facebook.com/v2.4/me?%s&fields=name,id,email' % token
     h = httplib2.Http()
     result = h.request(url, 'GET')[1]
@@ -72,7 +71,9 @@ def fbconnect():
     login_session['email'] = data["email"]
     login_session['facebook_id'] = data["id"]
 
-    # The token must be stored in the login_session in order to properly logout, let's strip out the information before the equals sign in our token
+    # The token must be stored in the login_session in order to properly
+    # logout, let's strip out the information before the equals sign in our
+    # token
     stored_token = token.split("=")[1]
     login_session['access_token'] = stored_token
 
@@ -108,7 +109,8 @@ def fbdisconnect():
     facebook_id = login_session['facebook_id']
     # The access token must me included to successfully logout
     access_token = login_session['access_token']
-    url = 'https://graph.facebook.com/%s/permissions?access_token=%s' % (facebook_id,access_token)
+    url = 'https://graph.facebook.com/%s/permissions?access_token=%s' % (
+        facebook_id, access_token)
     h = httplib2.Http()
     result = h.request(url, 'DELETE')[1]
     return "you have been logged out"
@@ -165,8 +167,8 @@ def gconnect():
     stored_credentials = login_session.get('credentials')
     stored_gplus_id = login_session.get('gplus_id')
     if stored_credentials is not None and gplus_id == stored_gplus_id:
-        response = make_response(json.dumps('Current user is already connected.'),
-                                 200)
+        response = make_response(
+            json.dumps('Current user is already connected.'), 200)
         response.headers['Content-Type'] = 'application/json'
         return response
 
@@ -252,14 +254,12 @@ def gdisconnect():
         return response
 
 
-
-
 # JSON APIs to view Game Information
 @app.route('/games/JSON')
 def gamesJSON():
     games = session.query(Game).all()
     for g in games:
-     print g.name
+        print g.name
     return jsonify(games=[g.serialize for g in games])
 
 
@@ -273,17 +273,30 @@ def showGames():
     else:
         return render_template('showGames.html', games=games)
 
-#Show Game Details page
+# Show Game Details page
+
+
 @app.route('/games/<int:game_id>/')
 @app.route('/games/<int:game_id>/details/')
 def showGameDetails(game_id):
     game = session.query(Game).filter_by(id=game_id).one()
     inventory = session.query(Inventory).filter_by(game_id=game_id).all()
     creator = getUserInfo(game.user_id)
-    if 'username' not in login_session or creator.id != login_session['user_id']:
-        return render_template('PublicshowGameDetails.html', game_id=game.id, game=game, inventory=inventory, creator=creator) 
+    if 'username' not in login_session or creator.id != login_session[
+            'user_id']:
+        return render_template(
+            'PublicshowGameDetails.html',
+            game_id=game.id,
+            game=game,
+            inventory=inventory,
+            creator=creator)
     else:
-        return render_template('showGameDetails.html', game_id=game.id, game=game, inventory=inventory, creator=creator)
+        return render_template(
+            'showGameDetails.html',
+            game_id=game.id,
+            game=game,
+            inventory=inventory,
+            creator=creator)
 
 
 # Show Consoles page
@@ -294,27 +307,51 @@ def showConsoles():
     if request.method == 'POST':
         con = request.form['console']
         inventory = session.query(Inventory).filter_by(console=con).all()
-        return render_template('consoles.html', consoleList = consoles , genreList=genres, gameConsoles=inventory)
+        return render_template(
+            'showConsoles.html',
+            consoleList=consoles,
+            genreList=genres,
+            gameConsoles=inventory)
     else:
-        return render_template('consoles.html', consoleList = consoles , genreList=genres)
+        return render_template(
+            'showConsoles.html',
+            consoleList=consoles,
+            genreList=genres)
 
 # Show Genres page
+
+
 @app.route('/games/genres/', methods=['GET', 'POST'])
 def showGenres():
     consoles = session.query(Console).all()
     genres = session.query(Genre).all()
-    #if 'username' not in login_session:
     if request.method == 'POST':
         gen = request.form['genre']
         inventory = session.query(Inventory).filter_by(genre=gen).all()
-        print "here 1"
-        for x in inventory:
-            print x.genre
-        return render_template('genres.html', consoleList = consoles , genreList=genres, gameGenres=inventory)
+        return render_template(
+            'showGenres.html',
+            consoleList=consoles,
+            genreList=genres,
+            gameGenres=inventory)
     else:
-        print "here 2"
-        return render_template('genres.html', consoleList = consoles , genreList=genres)
+        return render_template(
+            'showGenres.html',
+            consoleList=consoles,
+            genreList=genres)
 
+# show Age Rating
+@app.route('/games/ageRating/', methods=['GET', 'POST'])
+def showageRating():
+    #games = session.query(Game).all()
+    if request.method == 'POST':
+        age = request.form['ageRating']
+        gameAge = session.query(Game).filter_by(ageRating=age).all()
+        return render_template(
+            'showageRating.html',
+            gameAges=gameAge)
+    else:
+        return render_template(
+            'showageRating.html')
 
 
 # Create a new Game
@@ -327,37 +364,39 @@ def newGame():
 
     if request.method == 'POST':
         newGame = Game(
-            name=request.form['name'], 
+            name=request.form['name'],
             user_id=login_session['user_id'],
             description=request.form['description'],
-            ageRating= request.form['ageRating'],
+            ageRating=request.form['ageRating'],
             price=request.form['price'],
-            image = request.form['image']
-            )
-        
+            image=request.form['image']
+        )
+
         session.add(newGame)
         flash('New Game %s Successfully Created' % newGame.name)
         session.commit()
         gameObj = session.query(Game).order_by(Game.id.desc()).first()
 
-
         multiselect = request.form.getlist('console')
 
         for x in multiselect:
-            newInventory= Inventory(
-                    name = request.form['name'],
-                    game_id = gameObj.id,
-                    console=x,
-                    genre = request.form['genre'],
-                    user_id=login_session['user_id']
+            newInventory = Inventory(
+                name=request.form['name'],
+                game_id=gameObj.id,
+                console=x,
+                genre=request.form['genre'],
+                user_id=login_session['user_id']
 
-                            )
+            )
             session.add(newInventory)
             session.commit()
 
         return redirect(url_for('showGames'))
     else:
-        return render_template('newGame.html', consoleList = consoles , genreList=genres)
+        return render_template(
+            'newGame.html',
+            consoleList=consoles,
+            genreList=genres)
 
 
 # Create a new Console
@@ -367,8 +406,8 @@ def newConsole():
         return redirect('/login')
     if request.method == 'POST':
         newConsole = Console(
-            name=request.form['name'], 
-            )
+            name=request.form['name'],
+        )
         if request.form['name'] != '':
             session.add(newConsole)
             flash('New Console %s Successfully Created' % newConsole.name)
@@ -378,6 +417,8 @@ def newConsole():
         return render_template('newConsole.html')
 
 # Create a new Genre
+
+
 @app.route('/games/newGenre/', methods=['GET', 'POST'])
 def newGenre():
     if 'username' not in login_session:
@@ -385,8 +426,8 @@ def newGenre():
 
     if request.method == 'POST':
         newGenre = Genre(
-            name=request.form['name'], 
-            )
+            name=request.form['name'],
+        )
         if request.form['name'] != '':
             session.add(newGenre)
             flash('New Genre %s Successfully Created' % newGenre.name)
@@ -396,47 +437,55 @@ def newGenre():
         return render_template('newGenre.html')
 
 
-
 # Edit a Game
 @app.route('/games/<int:game_id>/edit/', methods=['GET', 'POST'])
 def editGame(game_id):
+    if 'username' not in login_session:
+        return redirect('/login')
     editedGame = session.query(Game).filter_by(id=game_id).one()
     consoles = session.query(Console).all()
     genres = session.query(Genre).all()
     games = session.query(Game).order_by(asc(Game.name))
-    if 'username' not in login_session:
-        return redirect('/login')
     if editedGame.user_id != login_session['user_id']:
         flash('You are not authorized to Delete %s' % editedGame.name)
         return render_template('showGames.html', games=games)
     if request.method == 'POST':
         if request.form['name']:
             editedGame.name = request.form['name']
-            user_id=login_session['user_id']
+            user_id = login_session['user_id']
         if request.form['description']:
-            editedGame.description=request.form['description']
+            editedGame.description = request.form['description']
         if request.form['price']:
-            editedGame.price=request.form['price']
+            editedGame.price = request.form['price']
         if request.form['ageRating']:
-            editedGame.ageRating= request.form['ageRating']
+            editedGame.ageRating = request.form['ageRating']
 
         session.add(editedGame)
         session.commit()
 
         flash('Game Successfully Edited %s' % editedGame.name)
-        return redirect(url_for('showGameDetails', game_id=editedGame.id, game=editedGame))
+        return redirect(
+            url_for(
+                'showGameDetails',
+                game_id=editedGame.id,
+                game=editedGame))
     else:
-        return render_template('editGame.html', game=editedGame, consoleList = consoles , genreList=genres)
+        return render_template(
+            'editGame.html',
+            game=editedGame,
+            consoleList=consoles,
+            genreList=genres)
 
 
 # Delete a Game
 @app.route('/games/<int:game_id>/delete/', methods=['GET', 'POST'])
 def deleteGame(game_id):
-    gameToDelete = session.query(Game).filter_by(id=game_id).one()
-    inventoryToDelete = session.query(Inventory).filter_by(game_id=game_id).all()
-    games = session.query(Game).order_by(asc(Game.name))
     if 'username' not in login_session:
         return redirect('/login')
+    gameToDelete = session.query(Game).filter_by(id=game_id).one()
+    inventoryToDelete = session.query(
+        Inventory).filter_by(game_id=game_id).all()
+    games = session.query(Game).order_by(asc(Game.name))
     if gameToDelete.user_id != login_session['user_id']:
         flash('You are not authorized to Delete %s' % gameToDelete.name)
         return render_template('showGames.html', games=games)
@@ -444,14 +493,12 @@ def deleteGame(game_id):
         session.delete(gameToDelete)
         flash('%s Successfully Deleted' % gameToDelete.name)
         session.commit()
-        for o in inventoryToDelete:
-            session.delete(o)
+        for d in inventoryToDelete:
+            session.delete(d)
         session.commit()
         return redirect(url_for('showGames', game_id=game_id))
     else:
         return render_template('deleteGame.html', game=gameToDelete)
-
-
 
 
 # Disconnect based on provider
@@ -479,5 +526,5 @@ def disconnect():
 
 if __name__ == '__main__':
     app.secret_key = 'super_secret_key'
-    app.debug = True
+    app.debug = False
     app.run(host='0.0.0.0', port=8000)
