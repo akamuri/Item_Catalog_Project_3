@@ -3,6 +3,7 @@ from sqlalchemy import create_engine, asc
 from sqlalchemy.orm import sessionmaker
 from database_setup import Base, Game, Genre, Console, User, Inventory
 from flask import session as login_session
+from flask.ext.seasurf import SeaSurf
 import random
 import string
 from oauth2client.client import flow_from_clientsecrets
@@ -13,6 +14,7 @@ from flask import make_response
 import requests
 
 app = Flask(__name__)
+csrf = SeaSurf(app)
 
 CLIENT_ID = json.loads(
     open('client_secrets.json', 'r').read())['web']['client_id']
@@ -340,9 +342,10 @@ def showGenres():
             genreList=genres)
 
 # show Age Rating
+
+
 @app.route('/games/ageRating/', methods=['GET', 'POST'])
 def showageRating():
-    #games = session.query(Game).all()
     if request.method == 'POST':
         age = request.form['ageRating']
         gameAge = session.query(Game).filter_by(ageRating=age).all()
@@ -478,6 +481,7 @@ def editGame(game_id):
 
 
 # Delete a Game
+@csrf.include
 @app.route('/games/<int:game_id>/delete/', methods=['GET', 'POST'])
 def deleteGame(game_id):
     if 'username' not in login_session:
