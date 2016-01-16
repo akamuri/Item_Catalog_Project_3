@@ -65,13 +65,12 @@ View a Games by Console
 - Select the Console you are looking for in the Drop Down Menu
 - Click Select to see all the Games avaibale on the Console
 
-View a Games by Price
------------------------
-- Avaible Web Game Catalog version 1.01
 
 View a Games by Age Rating
 -----------------------
-- Avaible Web Game Catalog version 1.01
+- Click Age Rating in the Side bar
+- Select the Age Rating you are looking for in the Drop Down Menu
+- Click Select to see all the Games avaibale in that Age Rating
 
 View a Games by Genre
 -----------------------
