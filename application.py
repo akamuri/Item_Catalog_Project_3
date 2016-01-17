@@ -3,7 +3,7 @@ from sqlalchemy import create_engine, asc
 from sqlalchemy.orm import sessionmaker
 from database_setup import Base, Game, Genre, Console, User, Inventory
 from flask import session as login_session
-#from flask.ext.seasurf import SeaSurf
+from flask.ext.seasurf import SeaSurf
 import random
 import string
 from oauth2client.client import flow_from_clientsecrets
@@ -15,7 +15,7 @@ from flask import make_response
 import requests
 
 app = Flask(__name__)
-#csrf = SeaSurf(app)
+csrf = SeaSurf(app)
 
 CLIENT_ID = json.loads(
     open('client_secrets.json', 'r').read())['web']['client_id']
@@ -269,13 +269,13 @@ def gamesJSON():
 @app.route('/games/XML/')
 def gamesXML():
     games = session.query(Game).all()
-    gamesObj=[g.serialize for g in games]
+    gamesObj = [g.serialize for g in games]
     json_string = json.dumps(gamesObj)
     return dicttoxml(json_string)
 
-
-
 # Show all Games
+
+
 @app.route('/')
 @app.route('/games/')
 def showGames():
@@ -368,6 +368,7 @@ def showageRating():
 
 
 # Create a new Game
+@csrf.exempt
 @app.route('/games/new/', methods=['GET', 'POST'])
 def newGame():
     if 'username' not in login_session:
@@ -451,6 +452,7 @@ def newGenre():
 
 
 # Edit a Game
+@csrf.exempt
 @app.route('/games/<int:game_id>/edit/', methods=['GET', 'POST'])
 def editGame(game_id):
     if 'username' not in login_session:
@@ -491,7 +493,7 @@ def editGame(game_id):
 
 
 # Delete a Game
-#@csrf.include
+@csrf.include
 @app.route('/games/<int:game_id>/delete/', methods=['GET', 'POST'])
 def deleteGame(game_id):
     if 'username' not in login_session:
