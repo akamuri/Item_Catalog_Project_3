@@ -3,18 +3,19 @@ from sqlalchemy import create_engine, asc
 from sqlalchemy.orm import sessionmaker
 from database_setup import Base, Game, Genre, Console, User, Inventory
 from flask import session as login_session
-from flask.ext.seasurf import SeaSurf
+#from flask.ext.seasurf import SeaSurf
 import random
 import string
 from oauth2client.client import flow_from_clientsecrets
 from oauth2client.client import FlowExchangeError
 import httplib2
 import json
+from dicttoxml import dicttoxml
 from flask import make_response
 import requests
 
 app = Flask(__name__)
-csrf = SeaSurf(app)
+#csrf = SeaSurf(app)
 
 CLIENT_ID = json.loads(
     open('client_secrets.json', 'r').read())['web']['client_id']
@@ -256,13 +257,22 @@ def gdisconnect():
         return response
 
 
-# JSON APIs to view Game Information
-@app.route('/games/JSON')
+# JSON endpoint to view Game Information
+@app.route('/games/JSON/')
 def gamesJSON():
     games = session.query(Game).all()
-    for g in games:
-        print g.name
     return jsonify(games=[g.serialize for g in games])
+
+
+# XML endpoint to view Game Information
+
+@app.route('/games/XML/')
+def gamesXML():
+    games = session.query(Game).all()
+    gamesObj=[g.serialize for g in games]
+    json_string = json.dumps(gamesObj)
+    return dicttoxml(json_string)
+
 
 
 # Show all Games
@@ -481,7 +491,7 @@ def editGame(game_id):
 
 
 # Delete a Game
-@csrf.include
+#@csrf.include
 @app.route('/games/<int:game_id>/delete/', methods=['GET', 'POST'])
 def deleteGame(game_id):
     if 'username' not in login_session:
