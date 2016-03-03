@@ -22,6 +22,12 @@ SETUP NOTES
 4. Run your application within the VM by typing python /vagrant/catalog/application.py into the Terminal. If you named the file from step 4 as something other than application.py, in the above command substitute in the file name on your computer.
 5. Access and test your application by visiting http://localhost:8000/games/ locally on your browser.
 
+
+Install easy_install
+curl https://bootstrap.pypa.io/ez_setup.py -o - | sudo python
+Install pip
+sudo easy_install pip
+
 GENERAL USAGE NOTES
 -------------------
 
