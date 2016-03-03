@@ -24,8 +24,11 @@ SETUP NOTES
 
 
 Install easy_install
+
 curl https://bootstrap.pypa.io/ez_setup.py -o - | sudo python
+
 Install pip
+
 sudo easy_install pip
 
 GENERAL USAGE NOTES
